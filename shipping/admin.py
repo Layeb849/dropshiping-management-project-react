@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Warehouse, Carrier, Customer, Shipment, Package, TrackingEvent
+from .models import Warehouse, Carrier, Customer, Shipment, Package, TrackingEvent, ShipmentItem
 
 
 @admin.register(Warehouse)
@@ -27,12 +27,17 @@ class PackageInline(admin.TabularInline):
     extra = 0
 
 
+class ShipmentItemInline(admin.TabularInline):
+    model = ShipmentItem
+    extra = 0
+
+
 @admin.register(Shipment)
 class ShipmentAdmin(admin.ModelAdmin):
     list_display = ("reference", "status", "origin", "carrier", "customer", "ship_date", "delivery_date")
     list_filter = ("status", "carrier")
     search_fields = ("reference", "customer__first_name", "customer__last_name")
-    inlines = [PackageInline]
+    inlines = [PackageInline, ShipmentItemInline]
 
 
 @admin.register(Package)
@@ -46,3 +51,9 @@ class TrackingEventAdmin(admin.ModelAdmin):
     list_display = ("package", "event_code", "location", "event_time")
     list_filter = ("event_code",)
     search_fields = ("package__tracking_number", "location", "description")
+
+
+@admin.register(ShipmentItem)
+class ShipmentItemAdmin(admin.ModelAdmin):
+    list_display = ("name", "sku", "shipment", "quantity", "unit_weight_kg", "unit_price")
+    search_fields = ("name", "sku", "shipment__reference")
