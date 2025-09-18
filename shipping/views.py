@@ -1,5 +1,5 @@
 from rest_framework import viewsets, filters
-from .models import Warehouse, Carrier, Customer, Shipment, Package, TrackingEvent
+from .models import Warehouse, Carrier, Customer, Shipment, Package, TrackingEvent, ShipmentItem
 from .serializers import (
     WarehouseSerializer,
     CarrierSerializer,
@@ -7,6 +7,7 @@ from .serializers import (
     ShipmentSerializer,
     PackageSerializer,
     TrackingEventSerializer,
+    ShipmentItemSerializer,
 )
 
 
@@ -35,7 +36,7 @@ class CustomerViewSet(viewsets.ModelViewSet):
 
 
 class ShipmentViewSet(viewsets.ModelViewSet):
-    queryset = Shipment.objects.select_related("origin", "destination", "customer", "carrier").all().order_by("-created_at")
+    queryset = Shipment.objects.select_related("origin", "destination", "customer", "carrier").prefetch_related("packages", "items").all().order_by("-created_at")
     serializer_class = ShipmentSerializer
     filter_backends = [filters.SearchFilter, filters.OrderingFilter]
     search_fields = ["reference", "customer__first_name", "customer__last_name", "carrier__name"]
@@ -56,3 +57,11 @@ class TrackingEventViewSet(viewsets.ModelViewSet):
     filter_backends = [filters.SearchFilter, filters.OrderingFilter]
     search_fields = ["package__tracking_number", "event_code", "location", "description"]
     ordering_fields = ["event_time", "created_at"]
+
+
+class ShipmentItemViewSet(viewsets.ModelViewSet):
+    queryset = ShipmentItem.objects.select_related("shipment").all()
+    serializer_class = ShipmentItemSerializer
+    filter_backends = [filters.SearchFilter, filters.OrderingFilter]
+    search_fields = ["name", "sku", "shipment__reference"]
+    ordering_fields = ["created_at", "quantity"]

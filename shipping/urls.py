@@ -7,6 +7,7 @@ from .views import (
     ShipmentViewSet,
     PackageViewSet,
     TrackingEventViewSet,
+    ShipmentItemViewSet,
 )
 
 
@@ -17,6 +18,7 @@ router.register(r'customers', CustomerViewSet)
 router.register(r'shipments', ShipmentViewSet)
 router.register(r'packages', PackageViewSet)
 router.register(r'tracking-events', TrackingEventViewSet)
+router.register(r'shipment-items', ShipmentItemViewSet)
 
 
 urlpatterns = [

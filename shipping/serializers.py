@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Warehouse, Carrier, Customer, Shipment, Package, TrackingEvent
+from .models import Warehouse, Carrier, Customer, Shipment, Package, TrackingEvent, ShipmentItem
 
 
 class WarehouseSerializer(serializers.ModelSerializer):
@@ -32,8 +32,15 @@ class TrackingEventSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
+class ShipmentItemSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ShipmentItem
+        fields = '__all__'
+
+
 class ShipmentSerializer(serializers.ModelSerializer):
     packages = PackageSerializer(many=True, read_only=True)
+    items = ShipmentItemSerializer(many=True, read_only=True)
 
     class Meta:
         model = Shipment
