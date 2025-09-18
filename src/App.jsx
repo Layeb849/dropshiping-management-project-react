@@ -37,6 +37,7 @@ import ManageUsersPage from '@/pages/admin/ManageUsersPage';
 import ManageOrdersPage from '@/pages/admin/ManageOrdersPage';
 import AdminLoginPage from '@/pages/admin/AdminLoginPage';
 import ManageHomepagePage from '@/pages/admin/ManageHomepagePage';
+import ShipmentsPage from '@/pages/admin/ShipmentsPage';
 
 function App() {
   return (
@@ -93,6 +94,7 @@ function App() {
           <Route path="categories" element={<ManageCategoriesPage />} />
           <Route path="users" element={<ManageUsersPage />} />
           <Route path="orders" element={<ManageOrdersPage />} />
+          <Route path="shipments" element={<ShipmentsPage />} />
           <Route path="homepage" element={<ManageHomepagePage />} />
         </Route>
 
